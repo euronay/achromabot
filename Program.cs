@@ -2,6 +2,8 @@
 using Discord;
 using Discord.Commands;
 using Discord.WebSocket;
+using GraphQL.Client.Http;
+using GraphQL.Client.Serializer.Newtonsoft;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -23,17 +25,14 @@ public class Program
 
         var appSettings = config.GetSection("App").Get<AppSettings>();
 
-        var discordConfig = new DiscordSocketConfig(){};
-
-        var commandConfig = new CommandServiceConfig(){};
 
         return new ServiceCollection()
             .AddSingleton(appSettings)
-            .AddSingleton(discordConfig)
-            .AddSingleton<DiscordSocketClient>()
-            .AddSingleton(commandConfig)
-            .AddSingleton<CommandService>()
+            .AddSingleton<DiscordSocketClient>(_ => new DiscordSocketClient(new DiscordSocketConfig()))
+            .AddSingleton<CommandService>(_ => new CommandService(new CommandServiceConfig()))
             .AddSingleton<CommandHandler>()
+            .AddTransient<GraphQLHttpClient>(_ => new GraphQLHttpClient("https://gateway.achroma.cards/api", new NewtonsoftJsonSerializer()))
+            .AddTransient<CardService>()
             .BuildServiceProvider();
     }
 

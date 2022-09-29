@@ -2,6 +2,26 @@ using Discord.Commands;
 
 public class CardsModule : ModuleBase<SocketCommandContext>
 {
-    [Command("hello")]
-    public Task Say([Remainder]string text) => ReplyAsync($"Hello '{text}'");
+    private readonly CardService _cardService;
+
+    public CardsModule(CardService cardService)
+    {
+        _cardService = cardService;
+    }
+
+    [Command("say")]
+    public Task Say([Remainder]string text) => ReplyAsync(text);
+
+    [Command("c")]
+    public async Task Card([Remainder]string query)
+    {
+        var card = await _cardService.GetSingleCard(query);
+
+        if(card == null)
+        {
+            await ReplyAsync($"Could not find '{query}'");
+        }
+
+        await ReplyAsync($"{card.Name} {card.Lore}");
+    }
 }
