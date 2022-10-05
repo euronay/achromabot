@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchromaBot.Common", "AchromaBot.Common\AchromaBot.Common.csproj", "{52BEBB2C-4535-4067-AF8F-DDDAEDB4F329}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchromaBot.Bot", "AchromaBot.Bot\AchromaBot.Bot.csproj", "{F999DB9E-2C8E-4A0F-BF36-BE482CF06265}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AchromaBot.Scraper", "AchromaBot.Scraper\AchromaBot.Scraper.csproj", "{F8F47B81-A087-4E40-AA3B-55DDA42F05F7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52BEBB2C-4535-4067-AF8F-DDDAEDB4F329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52BEBB2C-4535-4067-AF8F-DDDAEDB4F329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52BEBB2C-4535-4067-AF8F-DDDAEDB4F329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52BEBB2C-4535-4067-AF8F-DDDAEDB4F329}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F999DB9E-2C8E-4A0F-BF36-BE482CF06265}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F999DB9E-2C8E-4A0F-BF36-BE482CF06265}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F999DB9E-2C8E-4A0F-BF36-BE482CF06265}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F999DB9E-2C8E-4A0F-BF36-BE482CF06265}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8F47B81-A087-4E40-AA3B-55DDA42F05F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8F47B81-A087-4E40-AA3B-55DDA42F05F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F8F47B81-A087-4E40-AA3B-55DDA42F05F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8F47B81-A087-4E40-AA3B-55DDA42F05F7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

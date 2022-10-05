@@ -1,4 +1,5 @@
 using Newtonsoft.Json;
+namespace AchromaBot.Common;
 
 public class AchromaCard
 {

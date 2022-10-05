@@ -1,3 +1,4 @@
+using AchromaBot.Bot;
 using Discord.Commands;
 
 public class CardsModule : ModuleBase<SocketCommandContext>
@@ -15,7 +16,7 @@ public class CardsModule : ModuleBase<SocketCommandContext>
     [Command("c")]
     public async Task Card([Remainder]string query)
     {
-        var card = await _cardService.GetSingleCard(query);
+        var card = await _cardService.GetSingleCardAsync(query);
 
         if(card == null)
         {

@@ -1,9 +1,11 @@
 
+using AchromaBot.Common;
 using GraphQL.Client.Http;
 using Newtonsoft.Json;
-using System.Linq;
 
-public class CardService
+namespace AchromaBot.Scraper;
+
+public class ScraperService
 {
     private readonly GraphQLHttpClient _client;
 
@@ -22,12 +24,12 @@ public class CardService
         public SearchQuery SearchQuery { get; set; }
     }
 
-    public CardService(GraphQLHttpClient client)
+    public ScraperService(GraphQLHttpClient client)
     {
         this._client = client;
     }
 
-    public async Task<AchromaCard> GetSingleCard(string query)
+    public async Task<IEnumerable<AchromaCard>> GetCardsForSet(AchromaSet set)
     {
         var cardRequest = new GraphQLHttpRequest
         {
@@ -74,7 +76,8 @@ public class CardService
             OperationName = "search",
             Variables = new {
                 indexName = "cards.date_desc",
-                query = query,
+                facetFilters = new string[] {set.GetDescription()},
+                perPage = 100,
                 page = 1
             }
         };
@@ -83,7 +86,7 @@ public class CardService
         {
             var response = await _client.SendQueryAsync<CardResponse>(cardRequest);
 
-            return response.Data.SearchQuery.Items.GetClosestMatch(query);
+            return response.Data.SearchQuery.Items;
         }
         catch(Exception e)
         {
