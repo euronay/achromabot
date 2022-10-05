@@ -26,7 +26,10 @@ public class Program
 
         return new ServiceCollection()
             .AddSingleton(appSettings)
-            .AddSingleton<DiscordSocketClient>(_ => new DiscordSocketClient(new DiscordSocketConfig()))
+            .AddSingleton<DiscordSocketClient>(_ => new DiscordSocketClient(new DiscordSocketConfig(){
+                GatewayIntents = GatewayIntents.AllUnprivileged
+                | GatewayIntents.MessageContent 
+                }))
             .AddSingleton<CommandService>(_ => new CommandService(new CommandServiceConfig()))
             .AddSingleton<CommandHandler>()
             .AddSingleton<CardService>()

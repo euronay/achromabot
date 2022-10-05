@@ -1,4 +1,5 @@
 using AchromaBot.Bot;
+using Discord;
 using Discord.Commands;
 
 public class CardsModule : ModuleBase<SocketCommandContext>
@@ -23,6 +24,21 @@ public class CardsModule : ModuleBase<SocketCommandContext>
             await ReplyAsync($"Could not find '{query}'");
         }
 
-        await ReplyAsync($"{card.Name} {card.Lore}");
+        var imageUrl = $"https://storage.googleapis.com/achroma-697e8-cards/{card.CardId.Split("/").First()}.png";
+
+        var url = $"https://explore.achroma.cards/{card.Id}";
+
+        var embed = new EmbedBuilder()
+            .WithTitle(card.Name)
+            .WithUrl(url)
+            .WithThumbnailUrl(imageUrl)
+            .WithDescription(card.FormatType())
+            .AddField("Effect", $"{card.EffectType} {card.EffectValue}", true)
+            .AddField("Shard Value", card.FormatShardValue(), true)
+            .AddField("Gameplay", card.GamePlay)
+            .AddField("Lore", $"*{card.Lore}*")
+            .Build();
+
+        await ReplyAsync(embed: embed);
     }
 }
