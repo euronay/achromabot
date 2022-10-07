@@ -8,12 +8,14 @@ namespace AchromaBot.Bot;
 public class CardService
 {
     private List<AchromaCard> _cards;
+    private readonly AppSettings _appSettings;
 
-    public CardService()
+    public CardService(AppSettings appSettings)
     { 
+        _appSettings = appSettings;
         _cards = new List<AchromaCard>();
 
-        foreach(var file in Directory.GetFiles(Path.Combine(Assembly.GetExecutingAssembly().Location, "../../../../../../data"), "*.json"))
+        foreach(var file in Directory.GetFiles(_appSettings.DataPath, "*.json"))
         {
             Console.WriteLine($"Reading {file}...");
 
