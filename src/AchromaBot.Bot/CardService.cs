@@ -1,33 +1,33 @@
 using AchromaBot.Common;
 using Newtonsoft.Json;
-using System.Linq;
-using System.Reflection;
+using FuzzySharp;
+using FuzzySharp.SimilarityRatio;
+using FuzzySharp.SimilarityRatio.Scorer.Composite;
+using Microsoft.Extensions.Logging;
 
 namespace AchromaBot.Bot;
 
 public class CardService
 {
-    private List<AchromaCard> _cards;
-    private readonly AppSettings _appSettings;
+    private IEnumerable<AchromaCard> _cards;
+    private readonly ILogger _logger;
 
-    public CardService(AppSettings appSettings)
-    { 
-        _appSettings = appSettings;
-        _cards = new List<AchromaCard>();
+    public CardService(ILogger<CardService> logger) =>_logger = logger;
+    
 
-        foreach(var file in Directory.GetFiles(_appSettings.DataPath, "*.json"))
-        {
-            Console.WriteLine($"Reading {file}...");
-
-            var cardSetData = File.ReadAllText(file);
-            var cardSet = JsonConvert.DeserializeObject<AchromaCard[]>(cardSetData);
-            
-            _cards.AddRange(cardSet);
-        }
-    }
-
-    public async Task<AchromaCard> GetSingleCardAsync(string name)
+    public void InitCards(IEnumerable<AchromaCard> cards)
     {
-        return _cards.FirstOrDefault(c => c.Name.ToLower() == name.ToLower());
+        _logger.LogInformation($"Initializing CardService with {cards.Count()} cards");
+        _cards = cards;
+    }
+    
+
+    public AchromaCard GetSingleCard(string name)
+    {
+        var match = Process.ExtractOne(name.ToLower(), _cards.Select(c => c.Name.ToLower()), s => s, ScorerCache.Get<WeightedRatioScorer>());
+
+        _logger.LogInformation($"Searching for '{name}'. Found card '{match.Value}', score: {match.Score}.");
+
+        return match.Score > 80 ? _cards.FirstOrDefault(c => c.Name.ToLower() == match.Value) : null;
     }
 }

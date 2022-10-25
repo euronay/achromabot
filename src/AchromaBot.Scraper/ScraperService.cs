@@ -1,6 +1,7 @@
 
 using AchromaBot.Common;
 using GraphQL.Client.Http;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace AchromaBot.Scraper;
@@ -8,6 +9,7 @@ namespace AchromaBot.Scraper;
 public class ScraperService
 {
     private readonly GraphQLHttpClient _client;
+    private readonly ILogger _logger;
 
     private class SearchQuery
     {
@@ -24,13 +26,16 @@ public class ScraperService
         public SearchQuery SearchQuery { get; set; }
     }
 
-    public ScraperService(GraphQLHttpClient client)
+    public ScraperService(GraphQLHttpClient client, ILogger<ScraperService> logger)
     {
         this._client = client;
+        _logger = logger;
     }
 
-    public async Task<IEnumerable<AchromaCard>> GetCardsForSet(AchromaSet set)
+    public async Task<IEnumerable<AchromaCard>> GetAllCards()
     {
+        _logger.LogInformation("Scraping card data...");
+
         var cardRequest = new GraphQLHttpRequest
         {
             Query = @"query search($indexName: String, $query: String, $perPage: Int, $page: Int, $facetFilters: [[String]]) {
@@ -76,8 +81,8 @@ public class ScraperService
             OperationName = "search",
             Variables = new {
                 indexName = "cards.date_desc",
-                facetFilters = new string[] {set.GetDescription()},
-                perPage = 100,
+                facetFilters = new string[] {},
+                perPage = 1000,
                 page = 1
             }
         };
@@ -86,11 +91,15 @@ public class ScraperService
         {
             var response = await _client.SendQueryAsync<CardResponse>(cardRequest);
 
-            return response.Data.SearchQuery.Items;
+            var cards = response.Data.SearchQuery.Items;
+
+            _logger.LogInformation($"Scraped {cards.Count()} cards");
+
+            return cards;
         }
-        catch(Exception e)
+        catch(Exception ex)
         {
-            Console.WriteLine(e.ToString());
+            _logger.LogError(ex, "Error scraping cards");
             return null;
         }
     }

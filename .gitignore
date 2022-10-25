@@ -32,3 +32,6 @@ obj/
 
 # Ignore code-workspaces
 *.code-workspace
+
+# Data 
+data/

@@ -2,12 +2,13 @@ using System.Reflection;
 using Discord.Commands;
 using Discord.WebSocket;
 
+namespace AchromaBot.Bot;
+
 public class CommandHandler
 {
     private readonly DiscordSocketClient _client;
     private readonly CommandService _commands;
     private readonly IServiceProvider _serviceProvider;
-
 
     public CommandHandler(DiscordSocketClient client, CommandService commands, IServiceProvider serviceProvider)
     {

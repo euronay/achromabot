@@ -1,10 +1,6 @@
-﻿
-using System;
-using System.IO;
-using System.Text;
-using System.Threading.Tasks;
-using AchromaBot.Common;
+﻿using System.Text;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
 namespace AchromaBot.Scraper;
@@ -18,6 +14,7 @@ public class Program
     static IServiceProvider CreateProvider()
     {
         return new ServiceCollection()
+            .AddLogging(config => config.AddConsole())
             .AddScraperService()
             .BuildServiceProvider();
     }
@@ -27,17 +24,13 @@ public class Program
     public async Task MainAsync()
     {
         var scraper = _services.GetRequiredService<ScraperService>();
+        var logger = _services.GetRequiredService<ILogger>();
+        
+        var cards = await scraper.GetAllCards();
 
-        foreach(var set in Enum.GetValues<AchromaSet>())
-        {
-            Console.WriteLine($"Getting {set.GetDescription()}");
-
-            var cards = await scraper.GetCardsForSet(set);
-
-            await File.WriteAllTextAsync($"../../data/{set}.json", JsonConvert.SerializeObject(cards), Encoding.Default);
-        }
-
-        Console.WriteLine("Done");
+        await File.WriteAllTextAsync($"../../data/cards.json", JsonConvert.SerializeObject(cards), Encoding.Default);
+    
+        logger.LogInformation("Done");
     }
 
 }
