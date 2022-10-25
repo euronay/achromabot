@@ -3,7 +3,9 @@ Discord bot to search for [Achroma](https://www.achroma.cards/) cards.
 
 ## Usage 
 
-Add the Bot to your server using [this link](https://discord.com/api/oauth2/authorize?client_id=1024648820119838771&permissions=0&scope=bot)
+Add the bot to your server using [this link](https://discord.com/api/oauth2/authorize?client_id=1024648820119838771&permissions=0&scope=bot)
+
+Add all the shard images in the emoji directory to your server named `:shard_red:`, `:shard_yellow:` etc.
 
 Then when any user types `!c` followed by a card name, the card details will be displayed.
 
